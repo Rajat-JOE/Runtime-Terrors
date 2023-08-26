@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Entry</title>
+    <link rel="stylesheet" href="datacss.css">
+</head>
+<body link="#000" alink="#017bf5" vlink="#000">
+    <h3 align="center">
+		<font face="Lato" size="6">SYNC CARE </font>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<font face="cinzel" size="4">
+			<a href="#">HOME</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">NEARBY HOSPITALS</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">PORTFOLIO</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">ONLINE CONSULTATION</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">CONTACT US</a>
+		</font>
+	</h3>
+    <h1>Data Entry Form</h1>
+    <form id="data-entry-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <input type="gender" id="gender" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" required><br><br>
+        
+        <label for="temp">Temp:</label>
+        <input type="number" id="temp" required><br><br>
+
+        <label for="spo2">SpO2:</label>
+        <input type="number" id="spo2" required><br><br>
+
+        <label for="leucocyte">Leucocyte:</label>
+        <input type="number" id="leucocyte" required><br><br>
+
+        <label for="neutrophic">Neutrophic:</label>
+        <input type="number" id="neutrophic" required><br><br>
+
+        <label for="cympholyte">Cympholyte:</label>
+        <input type="number" id="cympholyte" required><br><br>
+
+
+        
+
+        <button type="button" onclick="storeData()">Submit</button>
+    </form>
+
+    <h2>Stored Data:</h2>
+    <pre id="display-data"></pre>
+
+    <button onclick="downloadCSV()">Download CSV</button>
+
+    <script>
+        // Array to store the entered data
+        const dataStorage = [];
+
+        function storeData() {
+            // Get the input values
+            const name = document.getElementById("name").value;
+            const gender = document.getElementById("gender").value;
+            const age = document.getElementById("age").value;
+            const temp = document.getElementById("temp").value;
+            const spo2 = document.getElementById("spo2").value;
+            const leucocyte = document.getElementById("leucocyte").value;
+            const neutrophic = document.getElementById("neutrophic").value;
+            const cympholyte = document.getElementById("cympholyte").value;
+        
+
+            // Create an object to hold the data
+            const data = {
+                Name: name,
+                Gender: gender,
+                Age: age,
+                Temp: temp,
+                SpO2: spo2,
+                Leucocyte: leucocyte,
+                Neutrophic: neutrophic,
+                Cympholyte: cympholyte
+            
+            };
+
+            // Add the data to the storage array
+            dataStorage.push(data);
+
+            // Display the stored data
+            //displayData();
+        }
+
+        function displayData() {
+            const displayPre = document.getElementById("display-data");
+            displayPre.textContent = JSON.stringify(dataStorage, null, 2);
+        }
+
+        function downloadCSV() {
+            const csvContent = "data:text/csv;charset=utf-8," + convertArrayOfObjectsToCSV(dataStorage);
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "data.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+
+        function convertArrayOfObjectsToCSV(data) {
+            const csv = [];
+            const header = Object.keys(data[0]);
+            csv.push(header.join(','));
+
+            data.forEach(item => {
+                const row = [];
+                header.forEach(key => {
+                    row.push(item[key]);
+                });
+                csv.push(row.join(','));
+            });
+
+            return csv.join('\n');
+        }
+    </script>
+</body>
+</html>
